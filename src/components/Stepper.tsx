@@ -29,7 +29,7 @@ export function Stepper({
     const stepNumber = index + 1;
     const isActive = stepNumber === currentStep;
     const isCompleted = stepNumber < currentStep;
-    const isClickable = allowNavigation && (isCompleted || isActive);
+    const isClickable = allowNavigation && isCompleted;
 
     const handlePress = () => {
       if (isClickable && onStepPress) {

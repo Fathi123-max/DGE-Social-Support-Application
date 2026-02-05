@@ -31,11 +31,11 @@ export function ReviewScreen({
   const stepsToReview = schema.steps.filter((step) => step.fields.length > 0);
 
   const handleToggleConfirm = useCallback(() => {
-    setIsConfirmed(!isConfirmed);
-  }, [isConfirmed]);
+    setIsConfirmed((prev) => !prev);
+  }, []);
 
   const handleSubmit = useCallback(async () => {
-    if (!isConfirmed) return;
+    if (!isConfirmed || isSubmitting) return;
 
     setIsSubmitting(true);
     setSubmitError(null);

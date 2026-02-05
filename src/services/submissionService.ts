@@ -48,7 +48,7 @@ export const submissionService = {
 
     return {
       success: false,
-      error: 'Failed to submit application. Please try again.',
+      error: 'SUBMISSION_FAILED',
     };
   },
 

@@ -47,7 +47,11 @@ export function ConfirmationScreen({
   }));
 
   const handleCopyReference = async () => {
-    await Clipboard.setStringAsync(referenceId);
+    try {
+      await Clipboard.setStringAsync(referenceId);
+    } catch {
+      // Clipboard may not be available on all platforms
+    }
   };
 
   return (

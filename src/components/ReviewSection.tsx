@@ -42,7 +42,9 @@ export function ReviewSection({ step, formData, onEdit }: ReviewSectionProps) {
     }
 
     if (field?.type === 'date' && typeof value === 'string') {
-      return new Date(value).toLocaleDateString(
+      const date = new Date(value);
+      if (isNaN(date.getTime())) return String(value);
+      return date.toLocaleDateString(
         locale === 'ar' ? 'ar-AE' : 'en-AE',
         { year: 'numeric', month: 'long', day: 'numeric' }
       );

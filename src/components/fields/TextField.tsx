@@ -34,7 +34,7 @@ export function TextField({
   onChangeText,
   onBlur,
 }: TextFieldProps) {
-  const { locale, isRTL } = useLocalization();
+  const { locale, isRTL, t } = useLocalization();
   const [isFocused, setIsFocused] = useState(false);
 
   const label = field.label[locale];
@@ -75,7 +75,7 @@ export function TextField({
         autoCapitalize={field.type === 'email' ? 'none' : 'sentences'}
         autoCorrect={false}
         textAlign={isRTL ? 'right' : 'left'}
-        accessibilityLabel={`${label}${field.required ? ', required' : ''}`}
+        accessibilityLabel={`${label}${field.required ? `, ${t('common.required')}` : ''}`}
         accessibilityHint={placeholder}
         accessibilityState={{ disabled: false }}
       />

@@ -48,44 +48,48 @@ export function AIAssistModal({
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerate = useCallback(async () => {
+    if (isLoading) return;
     setIsLoading(true);
     setError(null);
     analyticsService.trackAIAssist('opened', fieldKey, selectedTone);
 
-    const response = await openaiService.generateText(
-      {
-        fieldKey,
-        tone: selectedTone,
-        context: {
-          ...context,
-          currentValue,
+    try {
+      const response = await openaiService.generateText(
+        {
+          fieldKey,
+          tone: selectedTone,
+          context: {
+            ...context,
+            currentValue,
+          },
         },
-      },
-      locale
-    );
+        locale
+      );
 
-    setIsLoading(false);
-
-    if (response.success && response.text) {
-      setGeneratedText(response.text);
-      analyticsService.trackAIAssist('generated', fieldKey, selectedTone);
-    } else {
-      let errorMessage = t('ai.error');
-      if (response.error) {
-        if (response.error.includes('timed out') || response.error.includes('timeout')) {
-          errorMessage = t('ai.timeout');
-        } else if (response.error.includes('network') || response.error.includes('Network')) {
-          errorMessage = t('ai.networkError');
-        } else if (response.error.includes('API key') || response.error.includes('not configured')) {
-          errorMessage = t('ai.notConfigured');
-        } else {
-          errorMessage = t('ai.error');
+      if (response.success && response.text) {
+        setGeneratedText(response.text);
+        analyticsService.trackAIAssist('generated', fieldKey, selectedTone);
+      } else {
+        let errorMessage = t('ai.error');
+        if (response.error) {
+          if (response.error.includes('timed out') || response.error.includes('timeout')) {
+            errorMessage = t('ai.timeout');
+          } else if (response.error.includes('network') || response.error.includes('Network')) {
+            errorMessage = t('ai.networkError');
+          } else if (response.error.includes('API key') || response.error.includes('not configured')) {
+            errorMessage = t('ai.notConfigured');
+          }
         }
+        setError(errorMessage);
+        analyticsService.trackAIAssist('error', fieldKey, selectedTone, response.error);
       }
-      setError(errorMessage);
-      analyticsService.trackAIAssist('error', fieldKey, selectedTone, response.error);
+    } catch (err) {
+      setError(t('ai.error'));
+      analyticsService.trackAIAssist('error', fieldKey, selectedTone, err instanceof Error ? err.message : 'Unknown');
+    } finally {
+      setIsLoading(false);
     }
-  }, [fieldKey, selectedTone, context, currentValue, locale, t]);
+  }, [isLoading, fieldKey, selectedTone, context, currentValue, locale, t]);
 
   const handleAccept = useCallback(() => {
     onAccept(generatedText);

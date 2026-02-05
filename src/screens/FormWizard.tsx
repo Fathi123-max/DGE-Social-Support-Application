@@ -24,7 +24,7 @@ import { Button } from '../components/ui/Button';
 
 export function FormWizard() {
   const insets = useSafeAreaInsets();
-  const { isRTL, t } = useLocalization();
+  const { locale, isRTL, t } = useLocalization();
 
   const {
     formData,
@@ -47,12 +47,11 @@ export function FormWizard() {
 
   useEffect(() => {
     analyticsService.trackStepViewed(currentStep, formSchema.steps[currentStep - 1]?.key || '');
-  }, []);
+  }, [currentStep]);
 
   const currentStepData = formSchema.steps[currentStep - 1];
   const totalSteps = formSchema.steps.length;
-  const isLastStep = currentStep === totalSteps;
-  const isReviewStep = currentStep === 4;
+  const isReviewStep = currentStep === totalSteps;
 
   const handleNext = useCallback(() => {
     if (currentStepData && !isReviewStep) {
@@ -112,7 +111,7 @@ export function FormWizard() {
         steps={formSchema.steps}
         currentStep={currentStep}
         onStepPress={handleEditStep}
-        allowNavigation={currentStep > 1}
+        allowNavigation
       />
 
       <KeyboardAvoidingView
@@ -134,11 +133,11 @@ export function FormWizard() {
           {currentStepData && !isReviewStep && (
             <>
               <Text style={[styles.stepTitle, isRTL && styles.stepTitleRTL]}>
-                {currentStepData.title[isRTL ? 'ar' : 'en']}
+                {currentStepData.title[locale]}
               </Text>
               {currentStepData.description && (
                 <Text style={[styles.stepDescription, isRTL && styles.stepDescriptionRTL]}>
-                  {currentStepData.description[isRTL ? 'ar' : 'en']}
+                  {currentStepData.description[locale]}
                 </Text>
               )}
 

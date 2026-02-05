@@ -62,6 +62,7 @@ export function useFormState(schema: FormSchema): UseFormStateReturn {
 
   useEffect(() => {
     if (!initialLoadDone.current) return;
+    if (Object.keys(formData).length === 0) return;
 
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
@@ -94,10 +95,14 @@ export function useFormState(schema: FormSchema): UseFormStateReturn {
           return strValue.length >= (rule.value as number);
         case 'maxLength':
           return strValue.length <= (rule.value as number);
-        case 'min':
-          return Number(value) >= (rule.value as number);
-        case 'max':
-          return Number(value) <= (rule.value as number);
+        case 'min': {
+          const num = Number(strValue);
+          return !isNaN(num) && num >= (rule.value as number);
+        }
+        case 'max': {
+          const num = Number(strValue);
+          return !isNaN(num) && num <= (rule.value as number);
+        }
         case 'email':
           return EMAIL_REGEX.test(strValue);
         case 'phone':
@@ -139,6 +144,7 @@ export function useFormState(schema: FormSchema): UseFormStateReturn {
   const validateStep = useCallback(
     (fields: FieldSchema[]): boolean => {
       const stepErrors: Record<string, string> = {};
+      const clearedKeys: string[] = [];
       let isValid = true;
 
       for (const field of fields) {
@@ -146,10 +152,18 @@ export function useFormState(schema: FormSchema): UseFormStateReturn {
         if (error) {
           stepErrors[field.key] = error;
           isValid = false;
+        } else {
+          clearedKeys.push(field.key);
         }
       }
 
-      setErrors((prev) => ({ ...prev, ...stepErrors }));
+      setErrors((prev) => {
+        const next = { ...prev, ...stepErrors };
+        for (const key of clearedKeys) {
+          delete next[key];
+        }
+        return next;
+      });
 
       const touchedFields: Record<string, boolean> = {};
       for (const field of fields) {

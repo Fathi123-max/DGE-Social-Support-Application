@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   Modal,
+  ScrollView,
   StyleSheet,
   Platform,
 } from 'react-native';
@@ -43,9 +44,26 @@ export function DateField({
   const label = field.label[locale];
   const placeholder = field.placeholder?.[locale] || '';
 
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
+  const months = Array.from({ length: 12 }, (_, i) => i);
+  const maxDay = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+  const days = Array.from({ length: maxDay }, (_, i) => i + 1);
+
+  useEffect(() => {
+    if (selectedDay > maxDay) {
+      setSelectedDay(maxDay);
+    }
+  }, [selectedMonth, selectedYear, maxDay, selectedDay]);
+
+  const monthNames = locale === 'ar'
+    ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+    : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
   const formatDate = (dateStr: string): string => {
     if (!dateStr) return '';
     const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return '';
     return date.toLocaleDateString(locale === 'ar' ? 'ar-AE' : 'en-AE', {
       year: 'numeric',
       month: 'long',
@@ -60,22 +78,11 @@ export function DateField({
   }, [onBlur]);
 
   const handleConfirm = useCallback(() => {
-    const date = new Date(selectedYear, selectedMonth, selectedDay);
+    const clampedDay = Math.min(selectedDay, new Date(selectedYear, selectedMonth + 1, 0).getDate());
+    const date = new Date(selectedYear, selectedMonth, clampedDay);
     onValueChange(date.toISOString().split('T')[0]);
     handleClose();
   }, [selectedYear, selectedMonth, selectedDay, onValueChange, handleClose]);
-
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
-  const months = Array.from({ length: 12 }, (_, i) => i);
-  const days = Array.from(
-    { length: new Date(selectedYear, selectedMonth + 1, 0).getDate() },
-    (_, i) => i + 1
-  );
-
-  const monthNames = locale === 'ar'
-    ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
-    : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   return (
     <View style={styles.container}>
@@ -94,7 +101,7 @@ export function DateField({
         ]}
         onPress={handleOpen}
         accessibilityRole="button"
-        accessibilityLabel={`${label}${field.required ? ', required' : ''}`}
+        accessibilityLabel={`${label}${field.required ? `, ${t('common.required')}` : ''}`}
         accessibilityHint={value ? formatDate(value) : placeholder}
       >
         <Text
@@ -126,7 +133,10 @@ export function DateField({
           activeOpacity={1}
           onPress={handleClose}
         >
-          <View style={styles.modalContent}>
+          <View
+            style={styles.modalContent}
+            onStartShouldSetResponder={() => true}
+          >
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, isRTL && styles.modalTitleRTL]}>
                 {label}
@@ -138,7 +148,7 @@ export function DateField({
                 <Text style={styles.pickerLabel}>
                   {t('datePicker.day')}
                 </Text>
-                <View style={styles.pickerScrollContainer}>
+                <ScrollView style={styles.pickerScrollContainer} showsVerticalScrollIndicator={false}>
                   {days.map((day) => (
                     <TouchableOpacity
                       key={day}
@@ -158,14 +168,14 @@ export function DateField({
                       </Text>
                     </TouchableOpacity>
                   ))}
-                </View>
+                </ScrollView>
               </View>
 
               <View style={styles.pickerColumn}>
                 <Text style={styles.pickerLabel}>
                   {t('datePicker.month')}
                 </Text>
-                <View style={styles.pickerScrollContainer}>
+                <ScrollView style={styles.pickerScrollContainer} showsVerticalScrollIndicator={false}>
                   {months.map((month) => (
                     <TouchableOpacity
                       key={month}
@@ -185,14 +195,14 @@ export function DateField({
                       </Text>
                     </TouchableOpacity>
                   ))}
-                </View>
+                </ScrollView>
               </View>
 
               <View style={styles.pickerColumn}>
                 <Text style={styles.pickerLabel}>
                   {t('datePicker.year')}
                 </Text>
-                <View style={styles.pickerScrollContainer}>
+                <ScrollView style={styles.pickerScrollContainer} showsVerticalScrollIndicator={false}>
                   {years.slice(0, 80).map((year) => (
                     <TouchableOpacity
                       key={year}
@@ -212,7 +222,7 @@ export function DateField({
                       </Text>
                     </TouchableOpacity>
                   ))}
-                </View>
+                </ScrollView>
               </View>
             </View>
 
@@ -341,7 +351,6 @@ const styles = StyleSheet.create({
   },
   pickerScrollContainer: {
     height: 150,
-    overflow: 'scroll',
   },
   pickerItem: {
     paddingVertical: spacing.sm,

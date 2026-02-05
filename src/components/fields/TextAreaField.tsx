@@ -68,7 +68,7 @@ export function TextAreaField({
         maxLength={maxLength}
         textAlignVertical="top"
         textAlign={isRTL ? 'right' : 'left'}
-        accessibilityLabel={`${label}${field.required ? ', required' : ''}`}
+        accessibilityLabel={`${label}${field.required ? `, ${t('common.required')}` : ''}`}
         accessibilityHint={`${currentLength} ${t('common.of')} ${maxLength} ${t('common.characters')}`}
       />
 

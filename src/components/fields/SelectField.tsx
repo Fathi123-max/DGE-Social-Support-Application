@@ -97,7 +97,7 @@ export function SelectField({
         ]}
         onPress={handleOpen}
         accessibilityRole="combobox"
-        accessibilityLabel={`${label}${field.required ? ', required' : ''}`}
+        accessibilityLabel={`${label}${field.required ? `, ${t('common.required')}` : ''}`}
         accessibilityHint={displayValue || placeholder}
         accessibilityState={{ expanded: isOpen }}
       >
