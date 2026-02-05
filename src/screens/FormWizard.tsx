@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
   View,
   ScrollView,
@@ -44,8 +44,10 @@ export function FormWizard() {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState<string | null>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
     analyticsService.trackStepViewed(currentStep, formSchema.steps[currentStep - 1]?.key || '');
   }, [currentStep]);
 
@@ -120,6 +122,7 @@ export function FormWizard() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           contentContainerStyle={[
             styles.scrollContent,
