@@ -8,71 +8,128 @@ function getApiKey(): string {
   return process.env.EXPO_PUBLIC_OPENAI_API_KEY || '';
 }
 
-function buildSystemPrompt(context: AIAssistRequest['context'], locale: string): string {
-  const isArabic = locale === 'ar';
-  const basePrompt = isArabic
-    ? 'أنت مساعد كتابة محترف يساعد المتقدمين للدعم الاجتماعي الحكومي. اكتب بالعربية الفصحى بطريقة واضحة ومهنية.'
-    : 'You are a professional writing assistant helping applicants for government social support. Write in clear, professional language.';
+function buildSystemPrompt(locale: string): string {
+  if (locale === 'ar') {
+    return [
+      'أنت مساعد كتابة متعاطف ومحترف، تساعد المواطنين في كتابة طلبات الدعم الاجتماعي المقدمة لدائرة تمكين الحكومة في أبوظبي.',
+      '',
+      'القواعد التي يجب اتباعها:',
+      '- اكتب دائماً بصيغة المتكلم (أنا) كما لو أن مقدم الطلب يصف وضعه بنفسه.',
+      '- استخدم العربية الفصحى بأسلوب واضح وصادق ومحترم.',
+      '- أدمج المعلومات المقدمة بشكل طبيعي في السياق بدلاً من سردها كقائمة.',
+      '- حافظ على نبرة كريمة وجادة دون مبالغة عاطفية أو تضخيم.',
+      '- أعطِ النص النهائي مباشرة: بدون عناوين، بدون نقاط تعداد، بدون تحيات، وبدون علامات XML أو وسوم تفكير.',
+      '- إذا لم تتوفر بعض المعلومات، اكتب بشكل عام دون اختلاق تفاصيل.',
+    ].join('\n');
+  }
 
-  const contextInfo = [];
+  return [
+    'You are an empathetic, professional writing assistant helping citizens compose social support applications for the Abu Dhabi Department of Government Enablement (DGE).',
+    '',
+    'Rules you must follow:',
+    '- Always write in first person ("I") as if the applicant is describing their own situation.',
+    '- Use clear, honest, and respectful language.',
+    '- Weave any provided details (income, dependents, employment) naturally into the narrative rather than listing them.',
+    '- Maintain a dignified and earnest tone without emotional exaggeration or fabrication.',
+    '- Output only the final paragraph text: no headings, no bullet points, no greetings, no XML tags, no thinking tags, no internal reasoning.',
+    '- If certain details are not provided, write in general terms without inventing specifics.',
+  ].join('\n');
+}
+
+function buildContextBlock(context: AIAssistRequest['context'], locale: string): string {
+  const isArabic = locale === 'ar';
+  const parts: string[] = [];
+
   if (context.employmentStatus) {
-    contextInfo.push(isArabic
+    parts.push(isArabic
       ? `الحالة الوظيفية: ${context.employmentStatus}`
       : `Employment status: ${context.employmentStatus}`
     );
   }
   if (context.monthlyIncome) {
-    contextInfo.push(isArabic
+    parts.push(isArabic
       ? `الدخل الشهري: ${context.monthlyIncome} درهم`
       : `Monthly income: ${context.monthlyIncome} AED`
     );
   }
   if (context.dependents) {
-    contextInfo.push(isArabic
+    parts.push(isArabic
       ? `عدد المعالين: ${context.dependents}`
       : `Number of dependents: ${context.dependents}`
     );
   }
 
-  return `${basePrompt}\n\n${isArabic ? 'سياق المتقدم:' : 'Applicant context:'}\n${contextInfo.join('\n')}`;
+  if (parts.length === 0) return '';
+
+  const header = isArabic ? 'بيانات مقدم الطلب:' : 'Applicant details:';
+  return `\n${header}\n${parts.join('\n')}`;
 }
 
-function buildUserPrompt(fieldKey: string, tone: string, locale: string): string {
+function buildUserPrompt(
+  fieldKey: string,
+  tone: string,
+  context: AIAssistRequest['context'],
+  locale: string
+): string {
   const isArabic = locale === 'ar';
+
   const toneInstructions: Record<string, { en: string; ar: string }> = {
     short: {
-      en: 'Keep it brief and to the point, around 2-3 sentences.',
-      ar: 'اجعلها موجزة ومباشرة، حوالي 2-3 جمل.',
+      en: 'Write 2-3 clear sentences that state the core situation and need directly, without filler words.',
+      ar: 'اكتب 2-3 جمل واضحة تعبر عن صلب الموضوع والحاجة مباشرة، بدون حشو.',
     },
     detailed: {
-      en: 'Provide a comprehensive description with specific details, around 4-6 sentences.',
-      ar: 'قدم وصفاً شاملاً مع تفاصيل محددة، حوالي 4-6 جمل.',
+      en: 'Write 4-6 sentences covering the full picture: the circumstances, how they affect daily life and family, and what difference the assistance would make. Weave in specific details naturally.',
+      ar: 'اكتب 4-6 جمل تغطي الصورة الكاملة: الظروف، وتأثيرها على الحياة اليومية والأسرة، والفرق الذي سيحدثه الدعم. أدمج التفاصيل بشكل طبيعي.',
     },
     formal: {
-      en: 'Use formal, official language appropriate for government applications.',
-      ar: 'استخدم لغة رسمية مناسبة للطلبات الحكومية.',
+      en: 'Use respectful, official language appropriate for government correspondence. Maintain a dignified and earnest tone. Write 3-5 well-structured sentences.',
+      ar: 'استخدم لغة رسمية محترمة تليق بالمراسلات الحكومية. حافظ على نبرة وقورة وجادة. اكتب 3-5 جمل منظمة.',
     },
   };
 
   const fieldPrompts: Record<string, { en: string; ar: string }> = {
     financialSituation: {
-      en: 'Write a description of the applicant\'s current financial situation for a social support application.',
-      ar: 'اكتب وصفاً للوضع المالي الحالي للمتقدم لطلب الدعم الاجتماعي.',
+      en: 'Write a first-person description of my current financial situation for a social support application. Cover my sources of income (or lack thereof), monthly obligations, and how I am struggling to meet basic needs for myself and my family.',
+      ar: 'اكتب وصفاً بصيغة المتكلم عن وضعي المالي الحالي لطلب دعم اجتماعي. تناول مصادر دخلي (أو انعدامها)، والتزاماتي الشهرية، وكيف أواجه صعوبة في تلبية الاحتياجات الأساسية لي ولأسرتي.',
     },
     employmentCircumstances: {
-      en: 'Write a description of the applicant\'s employment circumstances for a social support application.',
-      ar: 'اكتب وصفاً لظروف عمل المتقدم لطلب الدعم الاجتماعي.',
+      en: 'Write a first-person description of my employment circumstances for a social support application. Explain my current job status, any changes that led to this situation, and the challenges I face in finding or maintaining work.',
+      ar: 'اكتب وصفاً بصيغة المتكلم عن ظروفي الوظيفية لطلب دعم اجتماعي. اشرح وضعي الوظيفي الحالي، والتغيرات التي أدت إلى هذا الوضع، والتحديات التي أواجهها في إيجاد عمل أو الاستمرار فيه.',
     },
     reasonForApplying: {
-      en: 'Write an explanation of why the applicant needs social support assistance.',
-      ar: 'اكتب شرحاً لسبب حاجة المتقدم للدعم الاجتماعي.',
+      en: 'Write a first-person explanation of why I am applying for social support. Describe the specific help I need, what I have already tried to do on my own, and how this assistance would help me and my family move forward.',
+      ar: 'اكتب شرحاً بصيغة المتكلم لسبب تقدمي بطلب الدعم الاجتماعي. صف المساعدة المحددة التي أحتاجها، وما حاولت فعله بنفسي، وكيف سيساعدني هذا الدعم وأسرتي على المضي قدماً.',
     },
   };
 
   const toneInstruction = toneInstructions[tone] || toneInstructions.detailed;
   const fieldPrompt = fieldPrompts[fieldKey] || fieldPrompts.financialSituation;
 
-  return `${isArabic ? fieldPrompt.ar : fieldPrompt.en}\n\n${isArabic ? toneInstruction.ar : toneInstruction.en}`;
+  const contextBlock = buildContextBlock(context, locale);
+  const hasCurrentValue = context.currentValue && context.currentValue.trim().length > 10;
+
+  if (hasCurrentValue) {
+    const refineInstruction = isArabic
+      ? `لقد كتبت بالفعل ما يلي:\n"${context.currentValue}"\n\nقم بتحسين وصقل هذا النص مع الحفاظ على المعنى المقصود. اجعله أكثر وضوحاً واحترافية.`
+      : `I have already written the following:\n"${context.currentValue}"\n\nRefine and improve this text while preserving my intended meaning. Make it clearer and more professional.`;
+
+    return [
+      isArabic ? fieldPrompt.ar : fieldPrompt.en,
+      contextBlock,
+      '',
+      refineInstruction,
+      '',
+      isArabic ? toneInstruction.ar : toneInstruction.en,
+    ].filter(Boolean).join('\n');
+  }
+
+  return [
+    isArabic ? fieldPrompt.ar : fieldPrompt.en,
+    contextBlock,
+    '',
+    isArabic ? toneInstruction.ar : toneInstruction.en,
+  ].filter(Boolean).join('\n');
 }
 
 async function makeRequest(
@@ -119,7 +176,16 @@ async function makeRequest(
     }
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content?.trim();
+    const rawText = data.choices?.[0]?.message?.content?.trim();
+
+    if (!rawText) {
+      throw new Error('No response generated');
+    }
+
+    const text = rawText
+      .replace(/<think>[\s\S]*?<\/think>/gi, '')
+      .replace(/<think>[\s\S]*/gi, '')
+      .trim();
 
     if (!text) {
       throw new Error('No response generated');
@@ -150,8 +216,8 @@ async function makeRequest(
 
 export const openaiService = {
   async generateText(request: AIAssistRequest, locale: string = 'en'): Promise<AIAssistResponse> {
-    const systemPrompt = buildSystemPrompt(request.context, locale);
-    const userPrompt = buildUserPrompt(request.fieldKey, request.tone, locale);
+    const systemPrompt = buildSystemPrompt(locale);
+    const userPrompt = buildUserPrompt(request.fieldKey, request.tone, request.context, locale);
     return makeRequest(systemPrompt, userPrompt);
   },
 
