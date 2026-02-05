@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { I18nManager, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { localStorageService } from '../services/localStorageService';
@@ -14,17 +14,16 @@ interface UseLocalizationReturn {
 
 export function useLocalization(): UseLocalizationReturn {
   const { t, i18n } = useTranslation();
-  const [locale, setLocaleState] = useState<'en' | 'ar'>(i18n.language as 'en' | 'ar');
-  const [isRTL, setIsRTL] = useState(i18n.language === 'ar');
+
+  const locale = (i18n.language === 'ar' ? 'ar' : 'en') as 'en' | 'ar';
+  const isRTL = locale === 'ar';
 
   useEffect(() => {
     const loadSavedLocale = async () => {
       const savedLocale = await localStorageService.loadLocale();
       if (savedLocale && (savedLocale === 'en' || savedLocale === 'ar')) {
         if (savedLocale !== i18n.language) {
-          i18n.changeLanguage(savedLocale);
-          setLocaleState(savedLocale);
-          setIsRTL(savedLocale === 'ar');
+          await i18n.changeLanguage(savedLocale);
         }
       }
     };
@@ -34,31 +33,28 @@ export function useLocalization(): UseLocalizationReturn {
 
   const setLocale = useCallback(
     async (newLocale: 'en' | 'ar') => {
-      const previousLocale = locale;
-      const newIsRTL = newLocale === 'ar';
+      const previousLocale = i18n.language;
 
       await i18n.changeLanguage(newLocale);
-      setLocaleState(newLocale);
-      setIsRTL(newIsRTL);
 
       await localStorageService.saveLocale(newLocale);
       analyticsService.trackLanguageChange(previousLocale, newLocale);
 
       if (Platform.OS !== 'web') {
-        const shouldForceRTL = newIsRTL;
+        const shouldForceRTL = newLocale === 'ar';
         if (I18nManager.isRTL !== shouldForceRTL) {
           I18nManager.allowRTL(shouldForceRTL);
           I18nManager.forceRTL(shouldForceRTL);
         }
       }
     },
-    [i18n, locale]
+    [i18n]
   );
 
   const toggleLocale = useCallback(async () => {
-    const newLocale = locale === 'en' ? 'ar' : 'en';
+    const newLocale = i18n.language === 'en' ? 'ar' : 'en';
     await setLocale(newLocale);
-  }, [locale, setLocale]);
+  }, [i18n.language, setLocale]);
 
   return {
     locale,
