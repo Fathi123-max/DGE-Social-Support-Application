@@ -11,8 +11,8 @@ function getApiKey(): string {
 function buildSystemPrompt(context: AIAssistRequest['context'], locale: string): string {
   const isArabic = locale === 'ar';
   const basePrompt = isArabic
-    ? 'أنت مساعد كتابة محترف يساعد المتقدمين للدعم الاجتماعي الحكومي. اكتب بالعربية الفصحى بطريقة واضحة ومهنية.'
-    : 'You are a professional writing assistant helping applicants for government social support. Write in clear, professional language.';
+    ? 'أنت مساعد كتابة محترف يساعد المتقدمين للدعم الاجتماعي الحكومي. اكتب بالعربية الفصحى بطريقة واضحة ومهنية. أعطِ الإجابة النهائية مباشرة بدون أي علامات أو وسوم مثل <think> أو تفسيرات جانبية.'
+    : 'You are a professional writing assistant helping applicants for government social support. Write in clear, professional language. Respond with only the final text directly. Do not include any XML tags, thinking tags, or internal reasoning.';
 
   const contextInfo = [];
   if (context.employmentStatus) {
@@ -119,7 +119,16 @@ async function makeRequest(
     }
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content?.trim();
+    const rawText = data.choices?.[0]?.message?.content?.trim();
+
+    if (!rawText) {
+      throw new Error('No response generated');
+    }
+
+    const text = rawText
+      .replace(/<think>[\s\S]*?<\/think>/gi, '')
+      .replace(/<think>[\s\S]*/gi, '')
+      .trim();
 
     if (!text) {
       throw new Error('No response generated');
