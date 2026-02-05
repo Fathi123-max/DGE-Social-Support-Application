@@ -1,6 +1,6 @@
 import { AIAssistRequest, AIAssistResponse } from '../types/form.types';
 
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const OPENAI_API_URL = process.env.EXPO_PUBLIC_OPENAI_API_URL || 'https://api.openai.com/v1/chat/completions';
 const DEFAULT_TIMEOUT = 15000;
 const MAX_RETRIES = 2;
 
@@ -100,7 +100,7 @@ async function makeRequest(
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
+        model: process.env.EXPO_PUBLIC_OPENAI_API_MODEL || 'gpt-3.5-turbo',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt },
