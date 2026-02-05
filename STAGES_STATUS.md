@@ -147,3 +147,35 @@ This document tracks the completion status of all implementation stages for the 
 | Confirmation shows mock reference ID | PASS |
 | README documents run and configuration | PASS |
 | STAGES_STATUS.md shows all stages COMPLETE | PASS |
+
+---
+
+## QA Audit (2026-02-05)
+
+A comprehensive QA audit was performed covering:
+
+### Issues Fixed:
+
+1. **Localization**
+   - Added missing i18n keys: `common.select`, `datePicker.*`, `language.*`, `notFound.*`
+   - Fixed hardcoded strings in DateField, LanguageSwitcher, not-found page
+   - Improved time-ago utility to use translation keys instead of hardcoded strings
+   - Added AI-specific error message keys (timeout, network)
+
+2. **RTL Layout**
+   - Fixed Stepper connector positioning for RTL
+   - Fixed Header title container margin for RTL
+   - Fixed AutosaveIndicator icon positioning for RTL
+
+3. **Accessibility**
+   - Added localized accessibility labels to LanguageSwitcher
+   - Added accessibility role and label to PrivacyNotice
+   - Added accessibility label to AutosaveIndicator
+   - Improved ReviewSection expand/collapse accessibility labels
+   - Added accessibility hint to ConfirmationScreen copy button
+
+4. **AI Feature**
+   - Improved error handling to map API errors to localized messages
+
+### QA Report
+See `QA_REPORT.md` for detailed findings and verification results.

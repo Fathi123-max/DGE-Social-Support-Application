@@ -108,6 +108,7 @@ export function Stepper({
           <View
             style={[
               styles.connector,
+              isRTL && styles.connectorRTL,
               isCompleted && styles.connectorCompleted,
             ]}
           />
@@ -186,6 +187,10 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: colors.neutral[200],
     zIndex: -1,
+  },
+  connectorRTL: {
+    left: 0,
+    right: '50%',
   },
   connectorCompleted: {
     backgroundColor: colors.success[500],

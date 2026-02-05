@@ -10,7 +10,7 @@ import Animated, {
 import { Cloud, Check } from 'lucide-react-native';
 import { colors, typography, spacing, borderRadius } from '../config/theme';
 import { useLocalization } from '../hooks/useLocalization';
-import { getTimeAgo } from '../utils/validation';
+import { getTimeAgoKey } from '../utils/validation';
 
 interface AutosaveIndicatorProps {
   lastSavedAt: Date | null;
@@ -35,12 +35,17 @@ export function AutosaveIndicator({ lastSavedAt }: AutosaveIndicatorProps) {
 
   if (!lastSavedAt) return null;
 
-  const timeAgo = getTimeAgo(lastSavedAt, locale);
+  const timeAgoResult = getTimeAgoKey(lastSavedAt);
+  const timeAgo = t(timeAgoResult.key, { count: timeAgoResult.count });
 
   return (
-    <Animated.View style={[styles.container, isRTL && styles.containerRTL, animatedStyle]}>
+    <Animated.View
+      style={[styles.container, isRTL && styles.containerRTL, animatedStyle]}
+      accessibilityLabel={t('accessibility.autosaveStatus', { status: timeAgo })}
+      accessibilityRole="text"
+    >
       <Cloud size={14} color={colors.success[500]} />
-      <Check size={10} color={colors.success[500]} style={styles.checkIcon} />
+      <Check size={10} color={colors.success[500]} style={[styles.checkIcon, isRTL && styles.checkIconRTL]} />
       <Text style={[styles.text, isRTL && styles.textRTL]}>
         {t('autosave.saved')} · {timeAgo}
       </Text>
@@ -64,6 +69,10 @@ const styles = StyleSheet.create({
   checkIcon: {
     marginLeft: -8,
     marginTop: 4,
+  },
+  checkIconRTL: {
+    marginLeft: 0,
+    marginRight: -8,
   },
   text: {
     ...typography.caption,

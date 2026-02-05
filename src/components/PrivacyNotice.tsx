@@ -8,8 +8,12 @@ export function PrivacyNotice() {
   const { isRTL, t } = useLocalization();
 
   return (
-    <View style={[styles.container, isRTL && styles.containerRTL]}>
-      <Shield size={20} color={colors.primary[500]} />
+    <View
+      style={[styles.container, isRTL && styles.containerRTL]}
+      accessibilityRole="text"
+      accessibilityLabel={t('accessibility.privacyNotice')}
+    >
+      <Shield size={20} color={colors.primary[500]} accessibilityElementsHidden />
       <Text style={[styles.text, isRTL && styles.textRTL]}>
         {t('privacy.notice')}
       </Text>

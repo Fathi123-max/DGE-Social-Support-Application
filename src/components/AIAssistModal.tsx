@@ -70,7 +70,19 @@ export function AIAssistModal({
       setGeneratedText(response.text);
       analyticsService.trackAIAssist('generated', fieldKey, selectedTone);
     } else {
-      setError(response.error || t('ai.error'));
+      let errorMessage = t('ai.error');
+      if (response.error) {
+        if (response.error.includes('timed out') || response.error.includes('timeout')) {
+          errorMessage = t('ai.timeout');
+        } else if (response.error.includes('network') || response.error.includes('Network')) {
+          errorMessage = t('ai.networkError');
+        } else if (response.error.includes('API key') || response.error.includes('not configured')) {
+          errorMessage = t('ai.notConfigured');
+        } else {
+          errorMessage = t('ai.error');
+        }
+      }
+      setError(errorMessage);
       analyticsService.trackAIAssist('error', fieldKey, selectedTone, response.error);
     }
   }, [fieldKey, selectedTone, context, currentValue, locale, t]);

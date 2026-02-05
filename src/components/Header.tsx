@@ -17,7 +17,7 @@ export function Header({ lastSavedAt }: HeaderProps) {
   return (
     <View style={[styles.container, { paddingTop: insets.top + spacing.sm }]}>
       <View style={[styles.topRow, isRTL && styles.topRowRTL]}>
-        <View style={styles.titleContainer}>
+        <View style={[styles.titleContainer, isRTL && styles.titleContainerRTL]}>
           <Text style={[styles.title, isRTL && styles.titleRTL]}>
             {t('app.title')}
           </Text>
@@ -56,6 +56,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     flex: 1,
     marginRight: spacing.md,
+  },
+  titleContainerRTL: {
+    marginRight: 0,
+    marginLeft: spacing.md,
   },
   title: {
     ...typography.h3,

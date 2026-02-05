@@ -43,24 +43,35 @@ export function formatCurrency(amount: number | string): string {
   }).format(num);
 }
 
-export function getTimeAgo(date: Date, locale: 'en' | 'ar'): string {
+export interface TimeAgoResult {
+  key: string;
+  count?: number;
+}
+
+export function getTimeAgoKey(date: Date): TimeAgoResult {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffMins = Math.floor(diffMs / 60000);
 
   if (diffMins < 1) {
-    return locale === 'ar' ? 'الآن' : 'Just now';
+    return { key: 'autosave.justNow' };
   }
 
   if (diffMins < 60) {
-    return locale === 'ar' ? `${diffMins} دقيقة مضت` : `${diffMins} min ago`;
+    return { key: 'autosave.minutesAgo', count: diffMins };
   }
 
   const diffHours = Math.floor(diffMins / 60);
   if (diffHours < 24) {
-    return locale === 'ar' ? `${diffHours} ساعة مضت` : `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    return {
+      key: diffHours === 1 ? 'autosave.hoursAgo' : 'autosave.hoursAgoPlural',
+      count: diffHours,
+    };
   }
 
   const diffDays = Math.floor(diffHours / 24);
-  return locale === 'ar' ? `${diffDays} يوم مضى` : `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  return {
+    key: diffDays === 1 ? 'autosave.daysAgo' : 'autosave.daysAgoPlural',
+    count: diffDays,
+  };
 }

@@ -58,6 +58,11 @@ export function ReviewSection({ step, formData, onEdit }: ReviewSectionProps) {
         onPress={handleToggle}
         accessibilityRole="button"
         accessibilityState={{ expanded: isExpanded }}
+        accessibilityLabel={
+          isExpanded
+            ? t('accessibility.collapseSection', { section: step.title[locale] })
+            : t('accessibility.expandSection', { section: step.title[locale] })
+        }
       >
         <View style={[styles.titleRow, isRTL && styles.titleRowRTL]}>
           <Animated.View style={chevronStyle}>

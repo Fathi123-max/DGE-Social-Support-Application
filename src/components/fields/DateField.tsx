@@ -136,7 +136,7 @@ export function DateField({
             <View style={[styles.pickerRow, isRTL && styles.pickerRowRTL]}>
               <View style={styles.pickerColumn}>
                 <Text style={styles.pickerLabel}>
-                  {locale === 'ar' ? 'اليوم' : 'Day'}
+                  {t('datePicker.day')}
                 </Text>
                 <View style={styles.pickerScrollContainer}>
                   {days.map((day) => (
@@ -163,7 +163,7 @@ export function DateField({
 
               <View style={styles.pickerColumn}>
                 <Text style={styles.pickerLabel}>
-                  {locale === 'ar' ? 'الشهر' : 'Month'}
+                  {t('datePicker.month')}
                 </Text>
                 <View style={styles.pickerScrollContainer}>
                   {months.map((month) => (
@@ -190,7 +190,7 @@ export function DateField({
 
               <View style={styles.pickerColumn}>
                 <Text style={styles.pickerLabel}>
-                  {locale === 'ar' ? 'السنة' : 'Year'}
+                  {t('datePicker.year')}
                 </Text>
                 <View style={styles.pickerScrollContainer}>
                   {years.slice(0, 80).map((year) => (

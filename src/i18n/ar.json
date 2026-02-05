@@ -18,7 +18,23 @@
     "required": "مطلوب",
     "optional": "اختياري",
     "characters": "حرف",
-    "of": "من"
+    "of": "من",
+    "select": "اختر",
+    "tapToCopy": "انقر للنسخ"
+  },
+  "language": {
+    "english": "English",
+    "arabic": "العربية",
+    "switchTo": "تغيير اللغة"
+  },
+  "datePicker": {
+    "day": "اليوم",
+    "month": "الشهر",
+    "year": "السنة"
+  },
+  "notFound": {
+    "title": "هذه الصفحة غير موجودة",
+    "goHome": "الذهاب إلى الصفحة الرئيسية"
   },
   "steps": {
     "step": "الخطوة",
@@ -35,8 +51,12 @@
   "autosave": {
     "saved": "تم حفظ المسودة",
     "lastUpdated": "آخر تحديث",
-    "minutesAgo": "دقيقة مضت",
     "justNow": "الآن",
+    "minutesAgo": "{{count}} دقيقة مضت",
+    "hoursAgo": "{{count}} ساعة مضت",
+    "hoursAgoPlural": "{{count}} ساعات مضت",
+    "daysAgo": "{{count}} يوم مضى",
+    "daysAgoPlural": "{{count}} أيام مضت",
     "restoring": "جاري استعادة المسودة..."
   },
   "ai": {
@@ -52,7 +72,9 @@
     "editText": "تعديل",
     "discard": "تجاهل",
     "error": "تعذر إنشاء النص. يرجى المحاولة مرة أخرى.",
-    "notConfigured": "المساعدة الذكية غير مُهيأة. يرجى إضافة مفتاح OpenAI API الخاص بك."
+    "notConfigured": "المساعدة الذكية غير مُهيأة. يرجى إضافة مفتاح OpenAI API الخاص بك.",
+    "timeout": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
+    "networkError": "خطأ في الشبكة. يرجى التحقق من اتصالك."
   },
   "review": {
     "title": "مراجعة طلبك",
@@ -130,6 +152,18 @@
       "renter": "مستأجر",
       "family": "يعيش مع العائلة",
       "other": "أخرى"
+    },
+    "emirates": {
+      "abu-dhabi": "أبوظبي",
+      "dubai": "دبي",
+      "sharjah": "الشارقة",
+      "ajman": "عجمان",
+      "umm-al-quwain": "أم القيوين",
+      "ras-al-khaimah": "رأس الخيمة",
+      "fujairah": "الفجيرة"
+    },
+    "country": {
+      "uae": "الإمارات العربية المتحدة"
     }
   },
   "accessibility": {
@@ -138,6 +172,12 @@
     "fieldError": "خطأ: {{error}}",
     "helpMeWriteButton": "احصل على مساعدة الذكاء الاصطناعي للمساعدة في كتابة هذا الحقل",
     "characterCount": "{{current}} من {{max}} حرف مستخدم",
-    "formProgress": "تقدم النموذج: {{percent}}% مكتمل"
+    "formProgress": "تقدم النموذج: {{percent}}% مكتمل",
+    "privacyNotice": "إشعار الخصوصية",
+    "autosaveStatus": "حالة الحفظ التلقائي: {{status}}",
+    "languageSwitch": "التبديل إلى {{language}}",
+    "expandSection": "توسيع قسم {{section}}",
+    "collapseSection": "طي قسم {{section}}",
+    "copyReference": "نسخ الرقم المرجعي إلى الحافظة"
   }
 }

@@ -5,16 +5,18 @@ import { colors, typography, spacing, borderRadius } from '../config/theme';
 import { useLocalization } from '../hooks/useLocalization';
 
 export function LanguageSwitcher() {
-  const { locale, toggleLocale } = useLocalization();
+  const { locale, toggleLocale, t } = useLocalization();
 
-  const displayText = locale === 'en' ? 'العربية' : 'English';
+  const displayText = locale === 'en' ? t('language.arabic') : t('language.english');
+  const targetLang = locale === 'en' ? 'Arabic' : 'English';
 
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={toggleLocale}
       accessibilityRole="button"
-      accessibilityLabel={`Switch to ${displayText}`}
+      accessibilityLabel={t('accessibility.languageSwitch', { language: targetLang })}
+      accessibilityHint={t('language.switchTo')}
     >
       <Globe size={18} color={colors.primary[500]} />
       <Text style={styles.text}>{displayText}</Text>

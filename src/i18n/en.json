@@ -18,7 +18,23 @@
     "required": "Required",
     "optional": "Optional",
     "characters": "characters",
-    "of": "of"
+    "of": "of",
+    "select": "Select",
+    "tapToCopy": "Tap to copy"
+  },
+  "language": {
+    "english": "English",
+    "arabic": "العربية",
+    "switchTo": "Switch language"
+  },
+  "datePicker": {
+    "day": "Day",
+    "month": "Month",
+    "year": "Year"
+  },
+  "notFound": {
+    "title": "This screen doesn't exist",
+    "goHome": "Go to home screen"
   },
   "steps": {
     "step": "Step",
@@ -35,8 +51,12 @@
   "autosave": {
     "saved": "Draft saved",
     "lastUpdated": "Last updated",
-    "minutesAgo": "min ago",
     "justNow": "Just now",
+    "minutesAgo": "{{count}} min ago",
+    "hoursAgo": "{{count}} hour ago",
+    "hoursAgoPlural": "{{count}} hours ago",
+    "daysAgo": "{{count}} day ago",
+    "daysAgoPlural": "{{count}} days ago",
     "restoring": "Restoring your draft..."
   },
   "ai": {
@@ -52,7 +72,9 @@
     "editText": "Edit",
     "discard": "Discard",
     "error": "Unable to generate text. Please try again.",
-    "notConfigured": "AI assistance is not configured. Please add your OpenAI API key."
+    "notConfigured": "AI assistance is not configured. Please add your OpenAI API key.",
+    "timeout": "Request timed out. Please try again.",
+    "networkError": "Network error. Please check your connection."
   },
   "review": {
     "title": "Review Your Application",
@@ -130,6 +152,18 @@
       "renter": "Renter",
       "family": "Living with Family",
       "other": "Other"
+    },
+    "emirates": {
+      "abu-dhabi": "Abu Dhabi",
+      "dubai": "Dubai",
+      "sharjah": "Sharjah",
+      "ajman": "Ajman",
+      "umm-al-quwain": "Umm Al Quwain",
+      "ras-al-khaimah": "Ras Al Khaimah",
+      "fujairah": "Fujairah"
+    },
+    "country": {
+      "uae": "United Arab Emirates"
     }
   },
   "accessibility": {
@@ -138,6 +172,12 @@
     "fieldError": "Error: {{error}}",
     "helpMeWriteButton": "Get AI assistance to help write this field",
     "characterCount": "{{current}} of {{max}} characters used",
-    "formProgress": "Form progress: {{percent}}% complete"
+    "formProgress": "Form progress: {{percent}}% complete",
+    "privacyNotice": "Privacy notice",
+    "autosaveStatus": "Auto-save status: {{status}}",
+    "languageSwitch": "Switch to {{language}}",
+    "expandSection": "Expand {{section}} section",
+    "collapseSection": "Collapse {{section}} section",
+    "copyReference": "Copy reference number to clipboard"
   }
 }

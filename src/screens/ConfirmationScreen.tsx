@@ -79,7 +79,8 @@ export function ConfirmationScreen({
             style={[styles.referenceBox, isRTL && styles.referenceBoxRTL]}
             onPress={handleCopyReference}
             accessibilityRole="button"
-            accessibilityLabel={`${t('submission.referenceId')}: ${referenceId}. Tap to copy.`}
+            accessibilityLabel={`${t('submission.referenceId')}: ${referenceId}. ${t('common.tapToCopy')}`}
+            accessibilityHint={t('accessibility.copyReference')}
           >
             <Text style={styles.referenceText}>{referenceId}</Text>
             <Copy size={20} color={colors.primary[500]} />
