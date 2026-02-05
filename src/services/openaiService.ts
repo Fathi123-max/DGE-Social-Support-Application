@@ -15,10 +15,13 @@ function buildSystemPrompt(locale: string): string {
       '',
       'القواعد التي يجب اتباعها:',
       '- اكتب دائماً بصيغة المتكلم (أنا) كما لو أن مقدم الطلب يصف وضعه بنفسه.',
-      '- استخدم العربية الفصحى بأسلوب واضح وصادق ومحترم.',
+      '- استخدم العربية الفصحى الواضحة بأسلوب رسمي ومحترم مع صياغة طبيعية.',
       '- أدمج المعلومات المقدمة بشكل طبيعي في السياق بدلاً من سردها كقائمة.',
-      '- حافظ على نبرة كريمة وجادة دون مبالغة عاطفية أو تضخيم.',
-      '- أعطِ النص النهائي مباشرة: بدون عناوين، بدون نقاط تعداد، بدون تحيات، وبدون علامات XML أو وسوم تفكير.',
+      '- حافظ على نبرة كريمة وجادة دون مبالغة عاطفية أو تضخيم أو لغة درامية.',
+      '- لا تخترع مواقف متطرفة أو تفترض مرضاً أو إعاقة أو كارثة ما لم يُذكر ذلك صراحة.',
+      '- تجنب تكرار نفس بنية الجملة. نوّع في الصياغة.',
+      '- اجعل النص واقعياً ومسؤولاً وقابلاً للتصديق.',
+      '- أعطِ النص النهائي مباشرة: بدون عناوين، بدون نقاط تعداد، بدون تحيات، بدون علامات اقتباس، وبدون علامات XML أو وسوم تفكير.',
       '- إذا لم تتوفر بعض المعلومات، اكتب بشكل عام دون اختلاق تفاصيل.',
     ].join('\n');
   }
@@ -28,10 +31,13 @@ function buildSystemPrompt(locale: string): string {
     '',
     'Rules you must follow:',
     '- Always write in first person ("I") as if the applicant is describing their own situation.',
-    '- Use clear, honest, and respectful language.',
-    '- Weave any provided details (income, dependents, employment) naturally into the narrative rather than listing them.',
+    '- Use clear, professional, simple English. Avoid complex vocabulary.',
+    '- Weave any provided details (income, dependents, employment, marital status, housing) naturally into the narrative rather than listing them.',
     '- Maintain a dignified and earnest tone without emotional exaggeration or fabrication.',
-    '- Output only the final paragraph text: no headings, no bullet points, no greetings, no XML tags, no thinking tags, no internal reasoning.',
+    '- Do not invent extreme situations. Do not assume illness, disability, or tragedy unless explicitly stated in the applicant details.',
+    '- Avoid repeating the same sentence structure. Vary phrasing for natural readability.',
+    '- Keep the content believable, responsible, and suitable for government review.',
+    '- Output only the final paragraph text: no headings, no bullet points, no greetings, no quotes, no XML tags, no thinking tags, no internal reasoning.',
     '- If certain details are not provided, write in general terms without inventing specifics.',
   ].join('\n');
 }
@@ -58,6 +64,18 @@ function buildContextBlock(context: AIAssistRequest['context'], locale: string):
       : `Number of dependents: ${context.dependents}`
     );
   }
+  if (context.maritalStatus) {
+    parts.push(isArabic
+      ? `الحالة الاجتماعية: ${context.maritalStatus}`
+      : `Marital status: ${context.maritalStatus}`
+    );
+  }
+  if (context.housingStatus) {
+    parts.push(isArabic
+      ? `حالة السكن: ${context.housingStatus}`
+      : `Housing status: ${context.housingStatus}`
+    );
+  }
 
   if (parts.length === 0) return '';
 
@@ -75,31 +93,31 @@ function buildUserPrompt(
 
   const toneInstructions: Record<string, { en: string; ar: string }> = {
     short: {
-      en: 'Write 2-3 clear sentences that state the core situation and need directly, without filler words.',
-      ar: 'اكتب 2-3 جمل واضحة تعبر عن صلب الموضوع والحاجة مباشرة، بدون حشو.',
+      en: 'Write 2-3 clear, direct sentences. State the core situation and need without filler words.',
+      ar: 'اكتب 2-3 جمل واضحة ومباشرة. عبّر عن صلب الموضوع والحاجة بدون حشو.',
     },
     detailed: {
-      en: 'Write 4-6 sentences covering the full picture: the circumstances, how they affect daily life and family, and what difference the assistance would make. Weave in specific details naturally.',
-      ar: 'اكتب 4-6 جمل تغطي الصورة الكاملة: الظروف، وتأثيرها على الحياة اليومية والأسرة، والفرق الذي سيحدثه الدعم. أدمج التفاصيل بشكل طبيعي.',
+      en: 'Write 5-7 sentences covering the full picture with added context and explanation: the circumstances, how they affect daily life and family, and what difference the assistance would make. Weave in specific details naturally.',
+      ar: 'اكتب 5-7 جمل تغطي الصورة الكاملة مع سياق وتوضيح إضافي: الظروف، وتأثيرها على الحياة اليومية والأسرة، والفرق الذي سيحدثه الدعم. أدمج التفاصيل بشكل طبيعي.',
     },
     formal: {
-      en: 'Use respectful, official language appropriate for government correspondence. Maintain a dignified and earnest tone. Write 3-5 well-structured sentences.',
-      ar: 'استخدم لغة رسمية محترمة تليق بالمراسلات الحكومية. حافظ على نبرة وقورة وجادة. اكتب 3-5 جمل منظمة.',
+      en: 'Use professional, polite, and structured government-style wording appropriate for official correspondence. Maintain a dignified and earnest tone. Write 3-5 well-structured sentences.',
+      ar: 'استخدم صياغة حكومية رسمية مهذبة ومنظمة تليق بالمراسلات الرسمية. حافظ على نبرة وقورة وجادة. اكتب 3-5 جمل منظمة.',
     },
   };
 
   const fieldPrompts: Record<string, { en: string; ar: string }> = {
     financialSituation: {
-      en: 'Write a first-person description of my current financial situation for a social support application. Cover my sources of income (or lack thereof), monthly obligations, and how I am struggling to meet basic needs for myself and my family.',
-      ar: 'اكتب وصفاً بصيغة المتكلم عن وضعي المالي الحالي لطلب دعم اجتماعي. تناول مصادر دخلي (أو انعدامها)، والتزاماتي الشهرية، وكيف أواجه صعوبة في تلبية الاحتياجات الأساسية لي ولأسرتي.',
+      en: 'Write a first-person description of my current financial situation for a social support application. Focus on financial pressure: cover my income limitations, monthly expenses and responsibilities, and clearly explain why financial support is needed.',
+      ar: 'اكتب وصفاً بصيغة المتكلم عن وضعي المالي الحالي لطلب دعم اجتماعي. ركّز على الضغط المالي: تناول محدودية دخلي، ونفقاتي ومسؤولياتي الشهرية، واشرح بوضوح لماذا أحتاج إلى الدعم المالي.',
     },
     employmentCircumstances: {
-      en: 'Write a first-person description of my employment circumstances for a social support application. Explain my current job status, any changes that led to this situation, and the challenges I face in finding or maintaining work.',
-      ar: 'اكتب وصفاً بصيغة المتكلم عن ظروفي الوظيفية لطلب دعم اجتماعي. اشرح وضعي الوظيفي الحالي، والتغيرات التي أدت إلى هذا الوضع، والتحديات التي أواجهها في إيجاد عمل أو الاستمرار فيه.',
+      en: 'Write a first-person description of my employment circumstances for a social support application. Explain my current job status clearly. If unemployed, mention job search efforts. If income is inconsistent, explain the instability and its impact.',
+      ar: 'اكتب وصفاً بصيغة المتكلم عن ظروفي الوظيفية لطلب دعم اجتماعي. اشرح وضعي الوظيفي الحالي بوضوح. إذا كنت عاطلاً عن العمل، اذكر جهود البحث عن عمل. إذا كان الدخل غير مستقر، اشرح عدم الاستقرار وتأثيره.',
     },
     reasonForApplying: {
-      en: 'Write a first-person explanation of why I am applying for social support. Describe the specific help I need, what I have already tried to do on my own, and how this assistance would help me and my family move forward.',
-      ar: 'اكتب شرحاً بصيغة المتكلم لسبب تقدمي بطلب الدعم الاجتماعي. صف المساعدة المحددة التي أحتاجها، وما حاولت فعله بنفسي، وكيف سيساعدني هذا الدعم وأسرتي على المضي قدماً.',
+      en: 'Write a first-person explanation of why I am applying for social support. Clearly connect the need for support to real-life challenges. Mention dependents if relevant. Emphasize that this is a temporary hardship and express the desire for stability.',
+      ar: 'اكتب شرحاً بصيغة المتكلم لسبب تقدمي بطلب الدعم الاجتماعي. اربط الحاجة إلى الدعم بالتحديات الحياتية الواقعية بوضوح. اذكر المعالين إن كان ذلك مناسباً. أكّد على أن هذه ضائقة مؤقتة وعبّر عن الرغبة في الاستقرار.',
     },
   };
 

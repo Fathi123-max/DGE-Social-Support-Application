@@ -26,6 +26,8 @@ interface AIAssistModalProps {
     employmentStatus?: string;
     monthlyIncome?: string;
     dependents?: string;
+    maritalStatus?: string;
+    housingStatus?: string;
   };
   onAccept: (text: string) => void;
   onClose: () => void;

@@ -85,6 +85,8 @@ export interface AIAssistRequest {
     employmentStatus?: string;
     monthlyIncome?: string;
     dependents?: string;
+    maritalStatus?: string;
+    housingStatus?: string;
     currentValue?: string;
   };
 }

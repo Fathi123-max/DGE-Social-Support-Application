@@ -130,6 +130,8 @@ export function AITextAreaField({
           employmentStatus: formData.employmentStatus as string,
           monthlyIncome: formData.monthlyIncome?.toString(),
           dependents: formData.dependents?.toString(),
+          maritalStatus: formData.maritalStatus as string,
+          housingStatus: formData.housingStatus as string,
         }}
         onAccept={handleAcceptAI}
         onClose={handleCloseAI}
