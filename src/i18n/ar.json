@@ -1,0 +1,143 @@
+{
+  "app": {
+    "title": "دعم DGE الاجتماعي",
+    "subtitle": "دائرة تمكين الحكومة - أبوظبي"
+  },
+  "common": {
+    "next": "التالي",
+    "back": "السابق",
+    "submit": "إرسال الطلب",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "close": "إغلاق",
+    "retry": "إعادة المحاولة",
+    "loading": "جاري التحميل...",
+    "required": "مطلوب",
+    "optional": "اختياري",
+    "characters": "حرف",
+    "of": "من"
+  },
+  "steps": {
+    "step": "الخطوة",
+    "of": "من",
+    "personalInfo": "المعلومات الشخصية",
+    "familyFinancial": "المعلومات العائلية والمالية",
+    "situation": "وصف الوضع",
+    "review": "المراجعة والتأكيد"
+  },
+  "privacy": {
+    "notice": "يتم تخزين بياناتك بشكل آمن على جهازك ولن يتم إرسالها إلا بعد التأكيد.",
+    "dataProtection": "معلوماتك محمية وسيتم استخدامها فقط لمعالجة طلبك."
+  },
+  "autosave": {
+    "saved": "تم حفظ المسودة",
+    "lastUpdated": "آخر تحديث",
+    "minutesAgo": "دقيقة مضت",
+    "justNow": "الآن",
+    "restoring": "جاري استعادة المسودة..."
+  },
+  "ai": {
+    "helpMeWrite": "ساعدني في الكتابة",
+    "generating": "جاري الإنشاء...",
+    "selectTone": "اختر أسلوب الكتابة",
+    "tones": {
+      "short": "قصير ومختصر",
+      "detailed": "مفصل",
+      "formal": "رسمي"
+    },
+    "accept": "قبول",
+    "editText": "تعديل",
+    "discard": "تجاهل",
+    "error": "تعذر إنشاء النص. يرجى المحاولة مرة أخرى.",
+    "notConfigured": "المساعدة الذكية غير مُهيأة. يرجى إضافة مفتاح OpenAI API الخاص بك."
+  },
+  "review": {
+    "title": "مراجعة طلبك",
+    "subtitle": "يرجى مراجعة جميع المعلومات قبل الإرسال",
+    "section": {
+      "personal": "المعلومات الشخصية",
+      "financial": "المعلومات العائلية والمالية",
+      "situation": "وصف الوضع"
+    },
+    "confirmLabel": "أؤكد أن جميع المعلومات المقدمة دقيقة وكاملة",
+    "editSection": "تعديل هذا القسم"
+  },
+  "submission": {
+    "submitting": "جاري إرسال طلبك...",
+    "success": "تم إرسال الطلب بنجاح!",
+    "referenceId": "الرقم المرجعي",
+    "saveReference": "يرجى حفظ هذا الرقم المرجعي لسجلاتك",
+    "whatNext": "ماذا بعد؟",
+    "nextSteps": "سيتم مراجعة طلبك من قبل فريقنا. سيتم إخطارك بالقرار عبر البريد الإلكتروني والرسائل النصية.",
+    "startNew": "بدء طلب جديد",
+    "error": "فشل الإرسال",
+    "tryAgain": "يرجى المحاولة مرة أخرى"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "minLength": "يجب أن يكون {{min}} حرف على الأقل",
+    "maxLength": "يجب ألا يزيد عن {{max}} حرف",
+    "email": "يرجى إدخال بريد إلكتروني صالح",
+    "phone": "يرجى إدخال رقم هاتف صالح",
+    "number": "يرجى إدخال رقم صالح",
+    "min": "يجب أن يكون {{min}} على الأقل",
+    "max": "يجب ألا يزيد عن {{max}}",
+    "pattern": "صيغة غير صالحة"
+  },
+  "fields": {
+    "name": "الاسم الكامل",
+    "nationalId": "الهوية الوطنية",
+    "dateOfBirth": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "address": "العنوان",
+    "city": "المدينة",
+    "state": "الإمارة/المنطقة",
+    "country": "الدولة",
+    "phone": "رقم الهاتف",
+    "email": "البريد الإلكتروني",
+    "maritalStatus": "الحالة الاجتماعية",
+    "dependents": "عدد المعالين",
+    "employmentStatus": "الحالة الوظيفية",
+    "monthlyIncome": "الدخل الشهري (درهم)",
+    "housingStatus": "حالة السكن",
+    "financialSituation": "الوضع المالي الحالي",
+    "employmentCircumstances": "ظروف العمل",
+    "reasonForApplying": "سبب التقديم"
+  },
+  "options": {
+    "gender": {
+      "male": "ذكر",
+      "female": "أنثى"
+    },
+    "maritalStatus": {
+      "single": "أعزب/عزباء",
+      "married": "متزوج/متزوجة",
+      "divorced": "مطلق/مطلقة",
+      "widowed": "أرمل/أرملة"
+    },
+    "employmentStatus": {
+      "employed": "موظف",
+      "unemployed": "عاطل عن العمل",
+      "selfEmployed": "عمل حر",
+      "retired": "متقاعد",
+      "student": "طالب"
+    },
+    "housingStatus": {
+      "owner": "مالك",
+      "renter": "مستأجر",
+      "family": "يعيش مع العائلة",
+      "other": "أخرى"
+    }
+  },
+  "accessibility": {
+    "stepIndicator": "الخطوة {{current}} من {{total}}: {{title}}",
+    "requiredField": "حقل مطلوب",
+    "fieldError": "خطأ: {{error}}",
+    "helpMeWriteButton": "احصل على مساعدة الذكاء الاصطناعي للمساعدة في كتابة هذا الحقل",
+    "characterCount": "{{current}} من {{max}} حرف مستخدم",
+    "formProgress": "تقدم النموذج: {{percent}}% مكتمل"
+  }
+}

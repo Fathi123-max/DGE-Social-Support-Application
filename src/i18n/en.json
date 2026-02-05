@@ -1,0 +1,143 @@
+{
+  "app": {
+    "title": "DGE Social Support",
+    "subtitle": "Abu Dhabi Department of Government Enablement"
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit Application",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "retry": "Retry",
+    "loading": "Loading...",
+    "required": "Required",
+    "optional": "Optional",
+    "characters": "characters",
+    "of": "of"
+  },
+  "steps": {
+    "step": "Step",
+    "of": "of",
+    "personalInfo": "Personal Information",
+    "familyFinancial": "Family & Financial",
+    "situation": "Situation Description",
+    "review": "Review & Confirm"
+  },
+  "privacy": {
+    "notice": "Your data is stored securely on your device and only submitted after confirmation.",
+    "dataProtection": "Your information is protected and will only be used for processing your application."
+  },
+  "autosave": {
+    "saved": "Draft saved",
+    "lastUpdated": "Last updated",
+    "minutesAgo": "min ago",
+    "justNow": "Just now",
+    "restoring": "Restoring your draft..."
+  },
+  "ai": {
+    "helpMeWrite": "Help Me Write",
+    "generating": "Generating...",
+    "selectTone": "Select writing tone",
+    "tones": {
+      "short": "Short & Concise",
+      "detailed": "Detailed",
+      "formal": "Formal"
+    },
+    "accept": "Accept",
+    "editText": "Edit",
+    "discard": "Discard",
+    "error": "Unable to generate text. Please try again.",
+    "notConfigured": "AI assistance is not configured. Please add your OpenAI API key."
+  },
+  "review": {
+    "title": "Review Your Application",
+    "subtitle": "Please review all information before submitting",
+    "section": {
+      "personal": "Personal Information",
+      "financial": "Family & Financial Information",
+      "situation": "Situation Description"
+    },
+    "confirmLabel": "I confirm that all information provided is accurate and complete",
+    "editSection": "Edit this section"
+  },
+  "submission": {
+    "submitting": "Submitting your application...",
+    "success": "Application Submitted Successfully!",
+    "referenceId": "Reference Number",
+    "saveReference": "Please save this reference number for your records",
+    "whatNext": "What happens next?",
+    "nextSteps": "Your application will be reviewed by our team. You will be notified of the decision via email and SMS.",
+    "startNew": "Start New Application",
+    "error": "Submission Failed",
+    "tryAgain": "Please try again"
+  },
+  "validation": {
+    "required": "This field is required",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be no more than {{max}} characters",
+    "email": "Please enter a valid email address",
+    "phone": "Please enter a valid phone number",
+    "number": "Please enter a valid number",
+    "min": "Must be at least {{min}}",
+    "max": "Must be no more than {{max}}",
+    "pattern": "Invalid format"
+  },
+  "fields": {
+    "name": "Full Name",
+    "nationalId": "National ID",
+    "dateOfBirth": "Date of Birth",
+    "gender": "Gender",
+    "address": "Address",
+    "city": "City",
+    "state": "State/Emirate",
+    "country": "Country",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "maritalStatus": "Marital Status",
+    "dependents": "Number of Dependents",
+    "employmentStatus": "Employment Status",
+    "monthlyIncome": "Monthly Income (AED)",
+    "housingStatus": "Housing Status",
+    "financialSituation": "Current Financial Situation",
+    "employmentCircumstances": "Employment Circumstances",
+    "reasonForApplying": "Reason for Applying"
+  },
+  "options": {
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "maritalStatus": {
+      "single": "Single",
+      "married": "Married",
+      "divorced": "Divorced",
+      "widowed": "Widowed"
+    },
+    "employmentStatus": {
+      "employed": "Employed",
+      "unemployed": "Unemployed",
+      "selfEmployed": "Self-Employed",
+      "retired": "Retired",
+      "student": "Student"
+    },
+    "housingStatus": {
+      "owner": "Owner",
+      "renter": "Renter",
+      "family": "Living with Family",
+      "other": "Other"
+    }
+  },
+  "accessibility": {
+    "stepIndicator": "Step {{current}} of {{total}}: {{title}}",
+    "requiredField": "Required field",
+    "fieldError": "Error: {{error}}",
+    "helpMeWriteButton": "Get AI assistance to help write this field",
+    "characterCount": "{{current}} of {{max}} characters used",
+    "formProgress": "Form progress: {{percent}}% complete"
+  }
+}
