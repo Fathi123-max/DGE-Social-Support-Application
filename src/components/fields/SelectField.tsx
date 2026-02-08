@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     borderColor: colors.neutral[300],
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: Platform.OS === 'ios' ? spacing.md : spacing.sm,
+    paddingVertical: 0,
     minHeight: 48,
   },
   selectorRTL: {
@@ -192,6 +192,8 @@ const styles = StyleSheet.create({
   },
   selectorText: {
     ...typography.body,
+    fontSize: 16,
+    fontWeight: '500',
     color: colors.neutral[900],
     flex: 1,
   },
@@ -252,6 +254,8 @@ const styles = StyleSheet.create({
   },
   optionText: {
     ...typography.body,
+    fontSize: 16,
+    fontWeight: '500',
     color: colors.neutral[800],
     flex: 1,
   },
