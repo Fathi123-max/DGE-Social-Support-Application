@@ -88,9 +88,16 @@ Before you begin, ensure you have:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `EXPO_PUBLIC_OPENAI_API_KEY` | Optional* | Your OpenAI API key for AI assistance |
+| `EXPO_PUBLIC_OPENAI_API_KEY` | ✅ Yes | Your API key (Minimax or OpenAI) |
+| `EXPO_PUBLIC_OPENAI_API_URL` | ✅ Yes | API endpoint URL |
+| `EXPO_PUBLIC_OPENAI_API_MODEL` | ✅ Yes | Model name to use |
 
-> **\*** The app works without it, but AI "Help Me Write" will show a warning.
+**Supported AI Providers:**
+
+| Provider | API URL | Model Examples |
+|----------|---------|----------------|
+| **Minimax** | `https://api.minimax.io/v1/chat/completions` | `MiniMax-M2.1` |
+| **OpenAI** | `https://api.openai.com/v1/chat/completions` | `gpt-4o`, `gpt-4o-mini` |
 
 **Setup:**
 
@@ -98,9 +105,13 @@ Before you begin, ensure you have:
 # Copy the template
 cp .env.example .env
 
-# Edit .env and add your key
-EXPO_PUBLIC_OPENAI_API_KEY=sk-your-key-here
+# Edit .env with your configuration
+EXPO_PUBLIC_OPENAI_API_KEY=your_api_key_here
+EXPO_PUBLIC_OPENAI_API_URL=https://api.minimax.io/v1/chat/completions
+EXPO_PUBLIC_OPENAI_API_MODEL=MiniMax-M2.1
 ```
+
+> **Note:** The app requires valid AI credentials for the "Help Me Write" feature to function.
 
 ---
 
