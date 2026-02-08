@@ -45,6 +45,8 @@ export function FormWizard() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState<string | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+  const fieldPositions = useRef<Record<string, number>>({});
+  const formRendererOffset = useRef<number>(0);
 
   useEffect(() => {
     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
@@ -57,12 +59,20 @@ export function FormWizard() {
 
   const handleNext = useCallback(() => {
     if (currentStepData && !isReviewStep) {
-      const isValid = validateStep(currentStepData.fields);
+      const { isValid, firstErrorKey } = validateStep(currentStepData.fields);
       if (isValid) {
         nextStep(totalSteps);
+      } else if (firstErrorKey) {
+        const fieldY = fieldPositions.current[firstErrorKey] || 0;
+        const scrollToY = Math.max(0, formRendererOffset.current + fieldY - 20); // 20px padding
+        scrollViewRef.current?.scrollTo({ y: scrollToY, animated: true });
       }
     }
   }, [currentStepData, isReviewStep, validateStep, nextStep, totalSteps]);
+
+  const handleFieldLayout = useCallback((key: string, y: number) => {
+    fieldPositions.current[key] = y;
+  }, []);
 
   const handleBack = useCallback(() => {
     prevStep();
@@ -144,14 +154,17 @@ export function FormWizard() {
                 </Text>
               )}
 
-              <FormRenderer
-                fields={currentStepData.fields}
-                formData={formData}
-                errors={errors}
-                onFieldChange={setFieldValue}
-                onFieldBlur={setFieldTouched}
-                getFieldError={getFieldError}
-              />
+              <View onLayout={(e) => (formRendererOffset.current = e.nativeEvent.layout.y)}>
+                <FormRenderer
+                  fields={currentStepData.fields}
+                  formData={formData}
+                  errors={errors}
+                  onFieldChange={setFieldValue}
+                  onFieldBlur={setFieldTouched}
+                  getFieldError={getFieldError}
+                  onFieldLayout={handleFieldLayout}
+                />
+              </View>
             </>
           )}
 

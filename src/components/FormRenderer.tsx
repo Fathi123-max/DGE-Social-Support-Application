@@ -14,6 +14,7 @@ interface FormRendererProps {
   onFieldChange: (key: string, value: string | number | Date | null) => void;
   onFieldBlur: (key: string) => void;
   getFieldError: (key: string) => string | null;
+  onFieldLayout?: (key: string, y: number) => void;
 }
 
 export function FormRenderer({
@@ -23,17 +24,20 @@ export function FormRenderer({
   onFieldChange,
   onFieldBlur,
   getFieldError,
+  onFieldLayout,
 }: FormRendererProps) {
   const renderField = (field: FieldSchema) => {
     const value = formData[field.key];
     const error = getFieldError(field.key);
+
+    let component = null;
 
     switch (field.type) {
       case 'text':
       case 'email':
       case 'phone':
       case 'number':
-        return (
+        component = (
           <TextField
             key={field.key}
             field={field}
@@ -43,9 +47,10 @@ export function FormRenderer({
             onBlur={() => onFieldBlur(field.key)}
           />
         );
+        break;
 
       case 'select':
-        return (
+        component = (
           <SelectField
             key={field.key}
             field={field}
@@ -55,9 +60,10 @@ export function FormRenderer({
             onBlur={() => onFieldBlur(field.key)}
           />
         );
+        break;
 
       case 'date':
-        return (
+        component = (
           <DateField
             key={field.key}
             field={field}
@@ -67,9 +73,10 @@ export function FormRenderer({
             onBlur={() => onFieldBlur(field.key)}
           />
         );
+        break;
 
       case 'textarea':
-        return (
+        component = (
           <TextAreaField
             key={field.key}
             field={field}
@@ -79,9 +86,10 @@ export function FormRenderer({
             onBlur={() => onFieldBlur(field.key)}
           />
         );
+        break;
 
       case 'ai-textarea':
-        return (
+        component = (
           <AITextAreaField
             key={field.key}
             field={field}
@@ -92,10 +100,22 @@ export function FormRenderer({
             onBlur={() => onFieldBlur(field.key)}
           />
         );
+        break;
 
       default:
-        return null;
+        component = null;
     }
+
+    if (!component) return null;
+
+    return (
+      <View
+        key={field.key}
+        onLayout={(e) => onFieldLayout?.(field.key, e.nativeEvent.layout.y)}
+      >
+        {component}
+      </View>
+    );
   };
 
   return (

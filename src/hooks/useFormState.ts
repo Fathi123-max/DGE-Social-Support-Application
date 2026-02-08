@@ -14,7 +14,7 @@ interface UseFormStateReturn {
   setFieldValue: (key: string, value: string | number | Date | null) => void;
   setFieldTouched: (key: string) => void;
   validateField: (field: FieldSchema) => string | null;
-  validateStep: (fields: FieldSchema[]) => boolean;
+  validateStep: (fields: FieldSchema[]) => { isValid: boolean; firstErrorKey?: string };
   goToStep: (step: number) => void;
   nextStep: (totalSteps: number) => void;
   prevStep: () => void;
@@ -142,16 +142,20 @@ export function useFormState(schema: FormSchema): UseFormStateReturn {
   }, []);
 
   const validateStep = useCallback(
-    (fields: FieldSchema[]): boolean => {
+    (fields: FieldSchema[]): { isValid: boolean; firstErrorKey?: string } => {
       const stepErrors: Record<string, string> = {};
       const clearedKeys: string[] = [];
       let isValid = true;
+      let firstErrorKey: string | undefined;
 
       for (const field of fields) {
         const error = validateField(field);
         if (error) {
           stepErrors[field.key] = error;
           isValid = false;
+          if (!firstErrorKey) {
+            firstErrorKey = field.key;
+          }
         } else {
           clearedKeys.push(field.key);
         }
@@ -171,7 +175,7 @@ export function useFormState(schema: FormSchema): UseFormStateReturn {
       }
       setTouched((prev) => ({ ...prev, ...touchedFields }));
 
-      return isValid;
+      return { isValid, firstErrorKey };
     },
     [validateField]
   );
