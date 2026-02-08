@@ -338,7 +338,7 @@ export const formSchema: FormSchema = {
           type: 'ai-textarea',
           required: true,
           minLength: 50,
-          maxLength: 1000,
+          maxLength: 2000,
           aiPromptContext: 'financial_situation',
           helpText: {
             en: 'Explain your current financial challenges and circumstances',
@@ -366,7 +366,7 @@ export const formSchema: FormSchema = {
           type: 'ai-textarea',
           required: true,
           minLength: 50,
-          maxLength: 1000,
+          maxLength: 2000,
           aiPromptContext: 'employment_circumstances',
           helpText: {
             en: 'Explain your current employment situation and any challenges',
@@ -394,7 +394,7 @@ export const formSchema: FormSchema = {
           type: 'ai-textarea',
           required: true,
           minLength: 50,
-          maxLength: 1000,
+          maxLength: 2000,
           aiPromptContext: 'reason_for_applying',
           helpText: {
             en: 'Explain why you need social support and how it would help',
@@ -426,7 +426,9 @@ export const formSchema: FormSchema = {
         ar: 'يرجى مراجعة طلبك قبل الإرسال',
       },
       fields: [],
-    },
+    }
+  
+
   ],
 };
 
