@@ -26,7 +26,7 @@ export interface SelectOption {
 }
 
 export interface ValidationRule {
-  type: 'required' | 'minLength' | 'maxLength' | 'pattern' | 'min' | 'max' | 'email' | 'phone';
+  type: 'required' | 'minLength' | 'maxLength' | 'pattern' | 'min' | 'max' | 'email' | 'phone' | 'luhn';
   value?: string | number | boolean;
   message: LocalizedString;
 }

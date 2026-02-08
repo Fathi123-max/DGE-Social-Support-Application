@@ -50,8 +50,12 @@ export const formSchema: FormSchema = {
             },
             {
               type: 'pattern',
-              value: '^[0-9]{15}$',
-              message: { en: 'National ID must be 15 digits', ar: 'يجب أن تكون الهوية الوطنية 15 رقماً' },
+              value: '^784-?[0-9]{4}-?[0-9]{7}-?[0-9]$',
+              message: { en: 'National ID must be a valid 15-digit Emirates ID', ar: 'يجب أن تكون الهوية الوطنية رقم هوية إماراتية صالحاً مكوناً من 15 رقماً' },
+            },
+            {
+              type: 'luhn',
+              message: { en: 'Invalid Emirates ID number', ar: 'رقم الهوية الوطنية غير صالح' },
             },
           ],
         },

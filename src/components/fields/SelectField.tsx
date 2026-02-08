@@ -30,6 +30,7 @@ export function SelectField({
 }: SelectFieldProps) {
   const { locale, isRTL, t } = useLocalization();
   const [isOpen, setIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const label = field.label[locale];
   const placeholder = field.placeholder?.[locale] || t('common.select');
@@ -38,9 +39,14 @@ export function SelectField({
   const selectedOption = options.find((opt) => opt.value === value);
   const displayValue = selectedOption?.label[locale] || '';
 
-  const handleOpen = useCallback(() => setIsOpen(true), []);
+  const handleOpen = useCallback(() => {
+    setIsOpen(true);
+    setIsFocused(true);
+  }, []);
+  
   const handleClose = useCallback(() => {
     setIsOpen(false);
+    setIsFocused(false);
     onBlur?.();
   }, [onBlur]);
 
@@ -93,6 +99,7 @@ export function SelectField({
         style={[
           styles.selector,
           isRTL && styles.selectorRTL,
+          isFocused && styles.selectorFocused,
           error && styles.selectorError,
         ]}
         onPress={handleOpen}
@@ -182,6 +189,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: 0,
     minHeight: 48,
+  },
+  selectorFocused: {
+    borderColor: colors.primary[500],
+    borderWidth: 2,
+    backgroundColor: colors.neutral[0],
   },
   selectorRTL: {
     flexDirection: 'row-reverse',

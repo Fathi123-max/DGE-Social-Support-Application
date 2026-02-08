@@ -9,7 +9,9 @@ A production-ready React Native (Expo) mobile application for the Abu Dhabi Depa
 - AI-powered writing assistance using OpenAI GPT
 - Full localization support (English + Arabic with RTL)
 - Auto-save with local storage persistence
-- Comprehensive field validation
+- **Auto-scroll to form errors** for seamless navigation
+- **Refined Emirates ID validation** with Luhn algorithm support
+- **Premium UX design** with optimized field layouts and focus states
 - Accessibility-first design
 - Mock submission with reference ID generation
 
@@ -66,6 +68,15 @@ yarn dev
 # For Android Emulator
 # Press 'a' in the terminal after starting
 ```
+
+## User Experience Refinements
+
+The application has been refined for a premium, production-grade feel:
+
+- **Intelligent Navigation**: When submitting a step with errors, the app automatically scrolls to the first invalid field, ensuring users can quickly correct mistakes.
+- **Premium Input Design**: Form fields feature 12px rounded corners and a high-contrast focus state (2px brand border + white background) for maximum clarity.
+- **Micro-layout Stability**: Mathematical padding compensation ensures that text remains perfectly static when jumping between focused and blurred states.
+- **Substantial Typography**: Input text uses 16pt/18pt Medium weights to feel solid and readable for all user groups.
 
 ## Project Structure
 

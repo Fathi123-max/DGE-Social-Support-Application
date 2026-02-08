@@ -31,6 +31,7 @@ export function DateField({
 }: DateFieldProps) {
   const { locale, isRTL, t } = useLocalization();
   const [isOpen, setIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [selectedYear, setSelectedYear] = useState(
     value ? new Date(value).getFullYear() : new Date().getFullYear() - 25
   );
@@ -71,9 +72,14 @@ export function DateField({
     });
   };
 
-  const handleOpen = useCallback(() => setIsOpen(true), []);
+  const handleOpen = useCallback(() => {
+    setIsOpen(true);
+    setIsFocused(true);
+  }, []);
+  
   const handleClose = useCallback(() => {
     setIsOpen(false);
+    setIsFocused(false);
     onBlur?.();
   }, [onBlur]);
 
@@ -97,6 +103,7 @@ export function DateField({
         style={[
           styles.selector,
           isRTL && styles.selectorRTL,
+          isFocused && styles.selectorFocused,
           error && styles.selectorError,
         ]}
         onPress={handleOpen}
@@ -279,6 +286,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: 0,
     minHeight: 48,
+  },
+  selectorFocused: {
+    borderColor: colors.primary[500],
+    borderWidth: 2,
+    backgroundColor: colors.neutral[0],
   },
   selectorRTL: {
     flexDirection: 'row-reverse',

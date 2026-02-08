@@ -63,7 +63,9 @@ export function TextField({
       </View>
 
       <TextInput
-        style={inputStyle}
+        style={[
+          inputStyle,
+        ]}
         value={value}
         onChangeText={onChangeText}
         onFocus={handleFocus}
@@ -119,13 +121,13 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: colors.neutral[50],
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: colors.neutral[300],
     borderRadius: borderRadius.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: Platform.OS === 'ios' ? 12 : 0,
+    paddingVertical: 0,
     ...typography.body,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '500',
     color: colors.neutral[900],
     minHeight: 48,
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
   },
   inputFocused: {
     borderColor: colors.primary[500],
+    // borderWidth: 2,
     backgroundColor: colors.neutral[0],
   },
   inputError: {

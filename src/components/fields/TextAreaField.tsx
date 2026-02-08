@@ -56,7 +56,10 @@ export function TextAreaField({
       </View>
 
       <TextInput
-        style={inputStyle}
+        style={[
+          inputStyle,
+          { paddingVertical: 12 },
+        ]}
         value={value}
         onChangeText={onChangeText}
         onFocus={handleFocus}
@@ -139,6 +142,7 @@ const styles = StyleSheet.create({
   },
   inputFocused: {
     borderColor: colors.primary[500],
+    borderWidth: 2,
     backgroundColor: colors.neutral[0],
   },
   inputError: {

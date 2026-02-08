@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { FormData, FormSchema, FieldSchema, ValidationRule } from '../types/form.types';
 import { localStorageService } from '../services/localStorageService';
 import { analyticsService } from '../services/analyticsService';
+import { validateLuhn } from '../utils/validation';
 import { useTranslation } from 'react-i18next';
 
 interface UseFormStateReturn {
@@ -109,6 +110,8 @@ export function useFormState(schema: FormSchema): UseFormStateReturn {
           return PHONE_REGEX.test(strValue.replace(/\s/g, ''));
         case 'pattern':
           return new RegExp(rule.value as string).test(strValue);
+        case 'luhn':
+          return validateLuhn(strValue);
         default:
           return true;
       }
