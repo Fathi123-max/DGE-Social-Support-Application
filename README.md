@@ -212,32 +212,6 @@ trackEvent(name: EventName, properties: EventProperties): void {
 
 ---
 
-## ✅ Testing Checklist
-
-- [ ] Complete form from Step 1 → Confirmation
-- [ ] Trigger validation errors (leave required fields empty)
-- [ ] Test AI assistance with different tones
-- [ ] Switch language and verify RTL layout
-- [ ] Close app → reopen → verify draft restored
-- [ ] Test on iOS Simulator and Android Emulator
-- [ ] Enable VoiceOver/TalkBack and navigate the form
-
----
-
-## 🛣️ Roadmap
-
-| Priority | Feature |
-|----------|---------|
-| 🟢 | Document upload (ID, proof of income) |
-| 🟢 | Biometric authentication (Face ID / Touch ID) |
-| 🟡 | Push notifications for application status |
-| 🟡 | Form analytics dashboard |
-| 🔵 | Offline queue with background sync |
-| 🔵 | WCAG 2.1 AA accessibility audit |
-| 🔵 | E2E testing with Detox / Maestro |
-
----
-
 ## 🤝 Tech Stack
 
 | Technology | Purpose |
